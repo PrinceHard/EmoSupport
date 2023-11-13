@@ -1,0 +1,12 @@
+{
+  "usuarios": [
+    {
+      "nome": "Alice",
+      "caminho_imagem": "/home/pedro/Documentos/Projetos/EmoSupport/faces/alice1.jpg"
+    },
+    {
+      "nome": "Pedro",
+      "caminho_imagem": "/home/pedro/Documentos/Projetos/EmoSupport/faces/pedro.jpeg"
+    }
+  ]
+}
