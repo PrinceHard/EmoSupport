@@ -1,69 +1,144 @@
-import face_recognition
-import cv2
+import face_recognition as reconhecedor
+import simpy
 import json
+import secrets
+import colored
+import random
+from datetime import datetime
 
-def carregar_configuracao():
-    # Carregar configurações a partir do arquivo JSON
-    with open('config.json') as f:
-        configuracao = json.load(f)
-    return configuracao
+FOTOS_VISITANTES = [
+    "./faces/visitantes1.jpg",
+    "./faces/visitantes2.jpg"
+]
+ARQUIVO_DE_CONFIGURACAO = "config.json"
 
-def reconhecimento_facial(configuracao):
-    # Carregar imagens de usuários estáticos
-    imagens_usuarios = []
-    for usuario in configuracao['usuarios']:
-        imagem_usuario = face_recognition.load_image_file(usuario['caminho_imagem'])
-        imagens_usuarios.append(imagem_usuario)
+TEMPO_DE_DETECCAO_DE_PACIENTES = 40
+TEMPO_DE_SIMULACAO = 1000
 
-    # Criar perfis de usuários
-    perfis_usuarios = []
-    for i, imagem_usuario in enumerate(imagens_usuarios):
-        face_codificacao = face_recognition.face_encodings(imagem_usuario)[0]
-        perfil_usuario = {'id': i+1, 'nome': configuracao['usuarios'][i]['nome'], 'codificacao': face_codificacao}
-        perfis_usuarios.append(perfil_usuario)
+def preparar():
+    global configuracao
 
-    # Iniciar captura de vídeo
-    cap = cv2.VideoCapture(0)
+    configuracao = None
+    try:
+        with open(ARQUIVO_DE_CONFIGURACAO, "r") as arquivo:
+            configuracao = json.load(arquivo)
+            if configuracao:
+                print("Arquivo de configuração carregado")
+    except Exception as e:
+        print(f"Erro lendo configuração: {str(e)}")
 
-    while True:
-        # Capturar um quadro do vídeo
-        ret, frame = cap.read()
+    global pacientes_reconhecidos
+    pacientes_reconhecidos = {}
 
-        # Identificar faces no quadro
-        faces = face_recognition.face_locations(frame)
 
-        if faces:
-            codificacoes_faces = face_recognition.face_encodings(frame, faces)
+def simular_visitas():
+    if not FOTOS_VISITANTES:
+        print("A lista de fotos de visitantes está vazia.")
+        return None
 
-            for face_codificacao in codificacoes_faces:
-                # Comparar com as codificações de usuários
-                matches = face_recognition.compare_faces([perfil['codificacao'] for perfil in perfis_usuarios], face_codificacao)
+    foto = random.choice(FOTOS_VISITANTES)
+    print(f"Foto de visitantes: {foto}")
 
-                nome_usuario = "Desconhecido"
-                if True in matches:
-                    indice_match = matches.index(True)
-                    nome_usuario = perfis_usuarios[indice_match]['nome']
+    visitantes = {
+        "foto": foto,
+        "pacientes": None
+    }
 
-                # Desenhar retângulo e nome na face identificada
-                top, right, bottom, left = faces[0]  # Usaremos a primeira face encontrada
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-                cv2.putText(frame, nome_usuario, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+    return visitantes
 
-        # Exibir o quadro resultante
-        cv2.imshow('Reconhecimento Facial', frame)
+def paciente_reconhecido_anteriormente(paciente):
+    global pacientes_reconhecidos
 
-        # Encerrar o programa ao pressionar 'q'
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+    reconhecido_previamente = False
+    for reconhecido in pacientes_reconhecidos.values():
+        if paciente["id"] == reconhecido["id"]:
+            reconhecido_previamente = True
+
             break
 
-    # Liberar recursos
-    cap.release()
-    cv2.destroyAllWindows()
+    return reconhecido_previamente
+
+def reconhecer_pacientes(visitantes):
+    global configuracao
+
+    print("Realizando reconhecimento de pacientes...")
+    foto_visitantes = reconhecedor.load_image_file(visitantes["foto"])
+    caracteristicas_dos_visitantes = reconhecedor.face_encodings(
+        foto_visitantes)
+
+    pacientes = []
+    for paciente in configuracao["pacientes"]:
+        fotos = paciente["fotos"]
+        for foto in fotos:
+            foto_paciente = reconhecedor.load_image_file(foto)
+            caracteristicas_paciente = reconhecedor.face_encodings(foto_paciente)[0]
+
+            reconhecimentos = reconhecedor.compare_faces(
+                caracteristicas_dos_visitantes, caracteristicas_paciente)
+            if True in reconhecimentos:
+                pacientes.append(paciente)
+                pacientes_reconhecidos[paciente["id"]] = paciente
+                break
+
+    if len(pacientes) > 0:
+        return True, pacientes
+    else:
+        print(colored.fg('black'), colored.bg('red'), "Nenhum paciente reconhecido dentre os visitantes", 
+              colored.attr('reset'))
+        return False, None
+
+
+def oferecer_suporte_emocional(paciente):
+    print(colored.fg('black'), colored.bg('green'), f"Oferecendo suporte emocional personalizado para o(a) :{paciente['nome']}", 
+          colored.attr('reset'))
+
+    # Simulando uma lista de necessidades emocionais do paciente
+    necessidades_emocionais = ["Motivação", "Calma", "Felicidade", "Conforto"]
+    
+    # Sorteando uma necessidade emocional aleatória
+    necessidade_simuladas = random.choice(necessidades_emocionais)
+
+    print(colored.fg('black'), colored.bg('white'), f"Necessidade emocional: {necessidade_aleatoria}", colored.attr('reset'))
+
+    # Lógica para oferecer suporte emocional com base na necessidade emocional sorteada
+    if necessidade_simuladas == "Motivação":
+        print(colored.fg('black'), colored.bg('white'), "Frases motivacionais:")
+        for frase in paciente["suporte_emocional"]["atividades_motivacionais"]:
+            print(colored.fg('black'), colored.bg('white'), f"- {frase}", colored.attr('reset'))
+    elif necessidade_aleatoria == "Calma":
+        print(colored.fg('black'), colored.bg('white'), "Atividades para acalmar:")
+        for atividade in paciente["suporte_emocional"]["atividades_motivacionais"]:
+            print(colored.fg('black'), colored.bg('white'), f"- {atividade}", colored.attr('reset'))
+
+def imprimir_dados_do_paciente(paciente):
+    print(colored.fg('black'), colored.bg('grey_54'), f"Paciente reconhecido em {datetime.now()} dentre os visitantes", 
+          colored.attr('reset'))
+    print(colored.fg('black'), colored.bg('white'), f"Nome {paciente['nome']}", colored.attr('reset')) 
+    print(colored.fg('black'), colored.bg('white'), f"Idade {paciente['idade']}", colored.attr('reset')) 
+    print(colored.fg('black'), colored.bg('white'), f"Endereço {paciente['endereco']}", colored.attr('reset')) 
+    oferecer_suporte_emocional(paciente)
+
+def reconhecer_visitantes(ambiente_de_simulacao):
+    global pacientes_reconhecidos
+
+    while ambiente_de_simulacao.now - ambiente_de_simulacao.now < TEMPO_DE_SIMULACAO:
+        print(
+            f"Reconhecendo pacientes entre visitantes...")
+
+        visitantes = simular_visitas()
+        ocorreram_reconhecimentos, pacientes = reconhecer_pacientes(visitantes)
+        if ocorreram_reconhecimentos:
+            for paciente in pacientes:
+
+                id_sessao = secrets.token_hex(nbytes=16).upper()
+                pacientes_reconhecidos[id_sessao] = paciente
+                imprimir_dados_do_paciente(paciente)
+
+        yield ambiente_de_simulacao.timeout(TEMPO_DE_DETECCAO_DE_PACIENTES)
 
 if __name__ == "__main__":
-    # Carregar configurações
-    configuracao = carregar_configuracao()
+    preparar()
 
-    # Iniciar processo de reconhecimento facial
-    reconhecimento_facial(configuracao)
-
+    ambiente_de_simulacao = simpy.Environment()
+    ambiente_de_simulacao.process(reconhecer_visitantes(ambiente_de_simulacao))
+    ambiente_de_simulacao.run(until=1000)

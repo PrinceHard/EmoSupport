@@ -1,12 +1,45 @@
 {
-  "usuarios": [
+  "pacientes": [
     {
+      "id": 123,
       "nome": "Alice",
-      "caminho_imagem": "/home/pedro/Documentos/Projetos/EmoSupport/faces/alice1.jpg"
+      "idade": 25,
+      "endereco": "bairro brasil, 234. Vitória da Conquista - BA",
+      "fotos": [
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/alice1.jpg",
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/alice2.jpg"
+      ],
+      "suporte_emocional": {
+        "frases_positivas": ["Você é incrível!", "Você consegue!", "Estamos aqui para ajudar!"],
+        "atividades_motivacionais": ["Assista a um vídeo motivacional", "Faça uma caminhada curta"]
+      },
+      "encaminhamento_profissional": {
+        "avaliacao_minima": 5,
+        "historico_suporte": [
+          {"data": "2023-01-01", "avaliacao": 4, "encaminhado": false},
+          {"data": "2023-02-15", "avaliacao": 6, "encaminhado": true}
+        ]
+      }
     },
     {
+      "id": 321,
       "nome": "Pedro",
-      "caminho_imagem": "/home/pedro/Documentos/Projetos/EmoSupport/faces/pedro.jpeg"
+      "idade": 21,
+      "endereco": "bairro recreio, 123. Vitória da Conquista - BA",
+      "fotos": [
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/pedro.jpeg"
+      ],
+      "suporte_emocional": {
+        "frases_positivas": ["Você é forte!", "Acredite em si mesmo!"],
+        "atividades_motivacionais": ["Escute sua música favorita", "Respire profundamente por alguns minutos"]
+      },
+      "encaminhamento_profissional": {
+        "avaliacao_minima": 4,
+        "historico_suporte": [
+          {"data": "2023-01-15", "avaliacao": 3, "encaminhado": false},
+          {"data": "2023-03-01", "avaliacao": 7, "encaminhado": true}
+        ]
+      }
     }
   ]
 }
