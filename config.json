@@ -10,11 +10,13 @@
           "/home/pedro/Documentos/Projetos/EmoSupport/faces/alice2.jpg"
       ],
       "suporte_emocional": {
-        "frases_positivas": ["Você é incrível!", "Você consegue!", "Estamos aqui para ajudar!"],
-        "atividades_motivacionais": ["Assista a um vídeo motivacional", "Faça uma caminhada curta"]
+        "calma": "Respire fundo e libere o estresse.",
+        "motivacao": "Acredite em si mesmo. Você é capaz de alcançar seus objetivos.",
+        "felicidade": "Sorria! A felicidade é um estado de espírito contagioso.",
+        "conforto": "Você não está sozinho. Estamos aqui para apoiar e ouvir."
       },
       "encaminhamento_profissional": {
-        "avaliacao_minima": 5,
+        "avaliacao_minima": 6,
         "historico_suporte": [
           {"data": "2023-01-01", "avaliacao": 4, "encaminhado": false},
           {"data": "2023-02-15", "avaliacao": 6, "encaminhado": true}
@@ -30,11 +32,35 @@
           "/home/pedro/Documentos/Projetos/EmoSupport/faces/pedro.jpeg"
       ],
       "suporte_emocional": {
-        "frases_positivas": ["Você é forte!", "Acredite em si mesmo!"],
-        "atividades_motivacionais": ["Escute sua música favorita", "Respire profundamente por alguns minutos"]
+        "calma": "Tudo vai ficar bem. Acalme sua mente e coração.",
+        "motivacao": "Os obstáculos são apenas oportunidades disfarçadas. Continue avançando.",
+        "felicidade": "Aprecie os pequenos momentos que trazem alegria ao seu dia.",
+        "conforto": "Às vezes, precisamos de um momento para descansar e cuidar de nós mesmos."
       },
       "encaminhamento_profissional": {
         "avaliacao_minima": 4,
+        "historico_suporte": [
+          {"data": "2023-01-15", "avaliacao": 3, "encaminhado": false},
+          {"data": "2023-03-01", "avaliacao": 7, "encaminhado": true}
+        ]
+      }
+    },
+    {
+      "id": 567,
+      "nome": "Larissa",
+      "idade": 19,
+      "endereco": "bairro candeias, 789. Vitória da Conquista - BA",
+      "fotos": [
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/pedro.jpeg"
+      ],
+      "suporte_emocional": {
+        "calma": "Encontre paz interior no silêncio dos seus pensamentos.",
+        "motivacao": "A persistência é a chave para o sucesso. Não desista!",
+        "felicidade": "A felicidade está em cada pequeno detalhe da vida. Encontre-a.",
+        "conforto": "Permita-se sentir. É normal e está tudo bem."
+      },
+      "encaminhamento_profissional": {
+        "avaliacao_minima": 3,
         "historico_suporte": [
           {"data": "2023-01-15", "avaliacao": 3, "encaminhado": false},
           {"data": "2023-03-01", "avaliacao": 7, "encaminhado": true}
