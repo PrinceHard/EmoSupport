@@ -25,11 +25,12 @@
     },
     {
       "id": 321,
-      "nome": "Pedro",
+      "nome": "Kleber",
       "idade": 21,
       "endereco": "bairro recreio, 123. Vitória da Conquista - BA",
       "fotos": [
-          "/home/pedro/Documentos/Projetos/EmoSupport/faces/pedro.jpeg"
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/kleber1.jpeg",
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/kleber2.jpeg"
       ],
       "suporte_emocional": {
         "calma": "Tudo vai ficar bem. Acalme sua mente e coração.",
@@ -51,7 +52,8 @@
       "idade": 19,
       "endereco": "bairro candeias, 789. Vitória da Conquista - BA",
       "fotos": [
-          "/home/pedro/Documentos/Projetos/EmoSupport/faces/pedro.jpeg"
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/larissa1.jpeg",
+          "/home/pedro/Documentos/Projetos/EmoSupport/faces/larissa2.jpeg"
       ],
       "suporte_emocional": {
         "calma": "Encontre paz interior no silêncio dos seus pensamentos.",
